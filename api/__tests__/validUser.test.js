@@ -1,12 +1,12 @@
-const { validUser } = require("../routes/userFunctions");
+const { validUser } = require('../routes/userFunctions');
 
-describe("validUser", () => {
-  const knownValidEmail = "a+b.c1@d1ef.ghi.com";
-  const knownValidUsername = "abc";
-  const knownValidPassword = "Abcdefg1";
+describe('validUser', () => {
+  const knownValidEmail = 'a+b.c1@d1ef.ghi.com';
+  const knownValidUsername = 'abc';
+  const knownValidPassword = 'Abcdefg1';
 
-  describe("for valid email, username, password", () => {
-    test("should return true", () => {
+  describe('for valid email, username, password', () => {
+    test('should return true', () => {
       expect(
         validUser(knownValidEmail, knownValidUsername, knownValidPassword)
       ).toBe(true);
@@ -14,62 +14,62 @@ describe("validUser", () => {
   });
 
   describe("for email 'abc.com'", () => {
-    test("should return false", () => {
-      expect(validUser("abc.com", knownValidUsername, knownValidPassword)).toBe(
+    test('should return false', () => {
+      expect(validUser('abc.com', knownValidUsername, knownValidPassword)).toBe(
         false
       );
     });
   });
 
   describe("for email 'abc@a@abc.com'", () => {
-    test("should return false", () => {
+    test('should return false', () => {
       expect(
-        validUser("abc@a@abc.com", knownValidUsername, knownValidPassword)
+        validUser('abc@a@abc.com', knownValidUsername, knownValidPassword)
       ).toBe(false);
     });
   });
 
   describe("for email '.abc@abc.com'", () => {
-    test("should return false", () => {
+    test('should return false', () => {
       expect(
-        validUser(".abc@abc.com", knownValidUsername, knownValidPassword)
+        validUser('.abc@abc.com', knownValidUsername, knownValidPassword)
       ).toBe(false);
     });
   });
 
   describe("for username 'ab'", () => {
-    test("should return false", () => {
-      expect(validUser(knownValidEmail, "ab", knownValidPassword)).toBe(false);
+    test('should return false', () => {
+      expect(validUser(knownValidEmail, 'ab', knownValidPassword)).toBe(false);
     });
   });
 
   describe("for password 'abcdefgh'", () => {
-    test("should return false", () => {
-      expect(validUser(knownValidEmail, knownValidUsername, "abcdefgh")).toBe(
+    test('should return false', () => {
+      expect(validUser(knownValidEmail, knownValidUsername, 'abcdefgh')).toBe(
         false
       );
     });
   });
 
   describe("for password 'aBcdefgh'", () => {
-    test("should return false", () => {
-      expect(validUser(knownValidEmail, knownValidUsername, "aBcdefgh")).toBe(
+    test('should return false', () => {
+      expect(validUser(knownValidEmail, knownValidUsername, 'aBcdefgh')).toBe(
         false
       );
     });
   });
 
   describe("for password 'abcde1gh'", () => {
-    test("should return false", () => {
-      expect(validUser(knownValidEmail, knownValidUsername, "abcde1gh")).toBe(
+    test('should return false', () => {
+      expect(validUser(knownValidEmail, knownValidUsername, 'abcde1gh')).toBe(
         false
       );
     });
   });
 
   describe("for password 'Ab1'", () => {
-    test("should return false", () => {
-      expect(validUser(knownValidEmail, knownValidUsername, "Ab1")).toBe(false);
+    test('should return false', () => {
+      expect(validUser(knownValidEmail, knownValidUsername, 'Ab1')).toBe(false);
     });
   });
 });
