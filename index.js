@@ -13,3 +13,5 @@ app.use('/api/entries', require('./api/routes/entries.js'));
 const PORT = process.env.port || 5000;
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
+
+module.exports = app
