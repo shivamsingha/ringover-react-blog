@@ -54,3 +54,46 @@ describe('Response of POST to /signin', () => {
     });
   });
 });
+
+describe('Response of POST to /signup', () => {
+  const email = 'a@abc.com';
+  const username = 'abcd'
+  const password = 'Abcdefg1';
+
+  beforeEach(async () => {
+    await db.query('TRUNCATE TABLE users');
+  });
+
+  describe('when email & username is available', () => {
+    test('should be 201', async () => {
+      const response = await request(app)
+        .post('/api/user/signup')
+        .send({ email, username, password });
+      expect(response.statusCode).toBe(201);
+    });
+  });
+
+  describe('', () => {
+    beforeEach(async () => {
+      await db.query('INSERT INTO users VALUES($1, $2, $3)', [
+        email,
+        username,
+        bcrypt.hashSync(password, 10),
+      ]);
+    });
+
+    test('when username already in use should be 400', async () => {
+      const response = await request(app)
+        .post('/api/user/signup')
+        .send({ email: 'abc@abc.com', username, password });
+      expect(response.statusCode).toBe(400);
+    });
+
+    test('when email already in use should be 400', async () => {
+      const response = await request(app)
+        .post('/api/user/signup')
+        .send({ email, username:'asdfa', password });
+      expect(response.statusCode).toBe(400);
+    });
+  });
+});
