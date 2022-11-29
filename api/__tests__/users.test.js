@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '.test.env' });
 const db = require('../psql-con');
-const request = require('supertest')(require('../../index'));
+const request = require('supertest')(require('../../app'));
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
