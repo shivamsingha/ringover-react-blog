@@ -128,7 +128,7 @@ afterEach(() => server.resetHandlers());
 
 afterAll(() => server.close());
 
-test('fetches & receives a user after clicking the fetch user button', async () => {
+test('pagination', async () => {
   const history = createMemoryHistory();
   renderWithProviders(
     <Router history={history}>
@@ -138,8 +138,13 @@ test('fetches & receives a user after clicking the fetch user button', async () 
 
   await waitFor(() => {
     screen.getByText('Next');
-    expect(screen.queryByText('Prev')).not.toBeInTheDocument();
+    expect(screen.queryByText('Prev')).toBeNull();
   });
 
   fireEvent.click(screen.getByRole('button', { name: /next/i }));
+
+  await waitFor(() => {
+    screen.getByText('Prev');
+    expect(screen.queryByText('Next')).toBeNull();
+  });
 });

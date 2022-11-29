@@ -1,9 +1,8 @@
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-utils';
-import App from '../App';
 import Entry from './Entry';
 
 export const handlers = [
