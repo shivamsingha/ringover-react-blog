@@ -1,13 +1,14 @@
+import { createMemoryHistory } from 'history';
 import React from 'react';
+import { Router } from 'react-router-dom';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-utils';
-import Home from './Home';
+import App from '../App';
 
 export const handlers = [
   rest.get('/api/entries/page/1', (req, res, ctx) => {
-    console.error("asdfa")
     return res(
       ctx.status(200),
       ctx.json([
@@ -106,6 +107,17 @@ export const handlers = [
       ])
     );
   }),
+
+  rest.post('/api/user/isLogged', (_, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        isLogged: true,
+        email: 'a@gmail.com',
+        username: 'qwer',
+      })
+    );
+  }),
 ];
 
 const server = setupServer(...handlers);
@@ -117,15 +129,17 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 test('fetches & receives a user after clicking the fetch user button', async () => {
-  renderWithProviders(<Home />);
+  const history = createMemoryHistory();
+  renderWithProviders(
+    <Router history={history}>
+      <App />
+    </Router>
+  );
 
-  // should show no user initially, and not be fetching a user
-  expect(await screen.getByText(/next/i)).toBeInTheDocument();
-  expect(screen.getByText(/prev/i)).not.toBeInTheDocument();
+  await waitFor(() => {
+    screen.getByText('Next');
+    expect(screen.queryByText('Prev')).not.toBeInTheDocument();
+  });
 
-  // after clicking the 'Fetch user' button, it should now show that it is fetching the user
   fireEvent.click(screen.getByRole('button', { name: /next/i }));
-
-  expect(await screen.getByText(/prev/i)).toBeInTheDocument();
-  expect(screen.getByText(/next/i)).not.toBeInTheDocument();
 });

@@ -1,11 +1,10 @@
-import { createMemoryHistory } from 'history';
 import React from 'react';
-import { Router } from 'react-router-dom';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '../utils/test-utils';
 import App from '../App';
+import Entry from './Entry';
 
 export const handlers = [
   rest.get(
@@ -30,7 +29,7 @@ export const handlers = [
   ),
 
   rest.get('/api/entries/abc', (req, res, ctx) => {
-    return res(ctx.status(200));
+    return res(ctx.status(200), ctx.json([]));
   }),
 ];
 
@@ -43,30 +42,26 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 test('entry rendering', async () => {
-  const history = createMemoryHistory();
-  history.push('/entry/test----------------------------------------------');
   renderWithProviders(
-    <Router history={history}>
-      <App />
-    </Router>
+    <Entry
+      match={{
+        params: { id: 'test----------------------------------------------' },
+      }}
+    />
   );
-  
-  screen.getByText(/test/i)
-  screen.getByText(/subheader/i)
-  screen.getByText('content test')
-  screen.getByText(/qwer/i)
-  screen.getByText(/cat1/i)
+
+  await screen.findByText('test');
+  await screen.findByText('subheader');
+  await screen.findByText('content test');
+  await screen.findByText(/qwer/i);
 });
 
 test('unavailable entry rendering', async () => {
-  const history = createMemoryHistory();
-  history.push('/entry/abc');
   renderWithProviders(
-    <Router history={history}>
-      <App />
-    </Router>
+    <Entry
+      match={{
+        params: { id: 'abc' },
+      }}
+    />
   );
-
-  expect(screen.getAllByRole('p')).toHaveTextContent("")
 });
-
