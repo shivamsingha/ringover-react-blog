@@ -6,7 +6,7 @@
   "scripts": {
     "client": "cd client && SKIP_PREFLIGHT_CHECK=true NODE_OPTIONS=--openssl-legacy-provider npm start",
     "server": "nodemon index.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "dev": "concurrently -kill-others-onfail \"npm run client\" \"npm run server\""
   },
