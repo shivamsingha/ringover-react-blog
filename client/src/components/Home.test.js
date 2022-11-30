@@ -110,15 +110,15 @@ const page2res = [
 ];
 
 export const handlers = [
-  rest.get('/api/entries/page/1', (req, res, ctx) => {
+  rest.get('/api/entries/page/1', (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(page1res));
   }),
 
-  rest.get('/api/entries/page/2', (req, res, ctx) => {
+  rest.get('/api/entries/page/2', (_req, res, ctx) => {
     return res(ctx.status(200), ctx.json(page2res));
   }),
 
-  rest.post('/api/user/isLogged', (_, res, ctx) => {
+  rest.post('/api/user/isLogged', (_req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
