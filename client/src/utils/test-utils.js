@@ -10,7 +10,7 @@ export function renderWithProviders(
   ui,
   {
     preloadedState = {},
-    store = createStore(rootReducer, applyMiddleware(thunk, logger)),
+    store = createStore(rootReducer, preloadedState, applyMiddleware(thunk, logger)),
     ...renderOptions
   } = {}
 ) {
