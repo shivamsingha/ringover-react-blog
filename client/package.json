@@ -38,6 +38,7 @@
   "proxy": "http://localhost:5000",
   "devDependencies": {
     "@testing-library/react": "12",
+    "@testing-library/user-event": "13",
     "jest": "24.9.0",
     "jest-environment-jsdom-sixteen": "^2.0.0",
     "msw": "^0.49.1"
